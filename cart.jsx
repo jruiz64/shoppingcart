@@ -24,6 +24,7 @@ const useDataApi = (initialUrl, initialData) => {
     data: initialData,
   });
   console.log(`useDataApi called`);
+  
   useEffect(() => {
     console.log("useEffect Called");
     let didCancel = false;
@@ -48,6 +49,7 @@ const useDataApi = (initialUrl, initialData) => {
   }, [url]);
   return [state, setUrl];
 };
+
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case "FETCH_INIT":
@@ -88,22 +90,25 @@ const Products = (props) => {
     Image,
     Input,
   } = ReactBootstrap;
+
   //  Fetch Data
   const { Fragment, useState, useEffect, useReducer } = React;
-  const [query, setQuery] = useState("http://localhost:1337/products");
+  const [query, setQuery] = useState("http://localhost:1337/api/products");
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
-    "http://localhost:1337/products",
+    "http://localhost:1337/api/products",
     {
       data: [],
     }
   );
+
   console.log(`Rendering Products ${JSON.stringify(data)}`);
+
   // Fetch Data
   const addToCart = (e) => {
     let name = e.target.name;
     let item = items.filter((item) => item.name == name);
     if (item[0].instock == 0) return;
-    item[0].instock = item[0].instcok - 1;
+    item[0].instock = item[0].instock - 1;
     console.log(`add to Cart ${JSON.stringify(item)}`);
     setCart([...cart, ...item]);
     //doFetch(query);
@@ -123,10 +128,10 @@ const Products = (props) => {
 
   let list = items.map((item, index) => {
     let n = index + 1049;
-    let uhit = "https://picsum.photos/" + n;
+    let url = "https://picsum.photos/" + n;
     return (
       <li key={index}>
-        <Image src={uhit} width={70} roundedCircle></Image>
+        <Image src={url} width={70} roundedCircle></Image>
         <Button variant="primary" size="large">
           {item.name}:{item.cost}-Stock={item.instock}
         </Button>
